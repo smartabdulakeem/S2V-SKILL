@@ -85,6 +85,15 @@ To eliminate redundant generation and conserve AI credits, the system maintains 
   - `tilt_down` (Top-to-Bottom): For plunging canyon descents, cavalry descending ridges, birds-eye downward focus.
   - `diagonal_drift`: For ambient exposition (marketplaces, encampments, council tents). Combines a subtle 1.05x zoom with slight lateral drift.
 - **Storyboard Camera Contract:** Every still image in the Phase 1 & 2 storyboard is tagged with its explicit camera directive (`motion: "tilt_up"`, `motion: "pan_right"`, etc.). SmartStudio / FFmpeg translates these into exact mathematical `zoompan` coordinates with smooth easing curves.
+- **Engine Verification & Schema Support (SmartStudio Live Status):**
+  - SmartStudio's rendering engine (`pipeline/composer.py`, `render_full_episode.py`) is verified and live.
+  - Supports both string shorthand (`"motion": "tilt_up"`) and full schema dictionary (`"motion": {"kind": "ken_burns", "effect": "tilt_up"}`).
+  - Employs trigonometric easing functions:
+    * `ease_in_out`: `((1-cos(PI*(on/num_frames)))/2)` for standard pans and zooms.
+    * `ease_in`: `(1-cos((PI/2)*(on/num_frames)))` for accelerating dramatic push-ins.
+    * `ease_out`: `sin((PI/2)*(on/num_frames))` for decelerating contextual reveals.
+    * `ease_in_out_inv`: `((1+cos(PI*(on/num_frames)))/2)` for inverted vertical tilts and left pans.
+  - S2V Phase 2 and 3 storyboards can confidently emit these camera directives without risk of fallback to static frames.
 
 ---
 
